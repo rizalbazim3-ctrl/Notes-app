@@ -34,9 +34,15 @@ function Inputandbutton() {
       const update = items.map((item, index) =>
         index === editindex ? { ...item, title, note } : item
       )
-      setItems(update)
+      localStorage.setItem("local",JSON.stringify(update))
+    const edited = JSON.parse(localStorage.getItem("local"))
+    setItems(edited)
+    
       setEditindex(null)
       setIsediting(false)
+
+      setNote("")
+      setTitle("")
 
     }
     else if (note.trim() !== "" && title.trim() !== "") {
@@ -47,6 +53,8 @@ function Inputandbutton() {
       const localview = JSON.parse(localStorage.getItem("local"))
 
       setItems(localview)
+        setNote("")
+        setTitle("")
 
     } else if (title === "") {
       alert("add title")
@@ -54,16 +62,17 @@ function Inputandbutton() {
     } else if (note === "") {
       alert("add note")
     }
-    setNote("")
-    setTitle("")
+   
 
   }
   const handledelete = (indexofdelete) => {
-    setItems(items.filter((value, index) => {
-      return (
-        indexofdelete !== index
-      )
-    }))
+
+    const deleted = items.filter((value, index) =>   indexofdelete !== index)
+
+    localStorage.setItem("local", JSON.stringify(deleted))
+    const storeddlt = JSON.parse(localStorage.getItem("local"))
+    setItems(storeddlt)
+    
   }
   const handleedit = (indextoedit) => {
     setTitle(items[indextoedit].title)
@@ -77,14 +86,20 @@ function Inputandbutton() {
     const updated = items.map((item, position) =>
       position === indexofarchive ? { ...item, archive: true } : item
     )
-    setItems(updated)
+localStorage.setItem("local",JSON.stringify(updated))
+    const edited = JSON.parse(localStorage.getItem("local"))
+    setItems(edited)
+
+    
   }
 
   const handleunarchive = (indexofarchive) => {
     const updated = items.map((item, position) =>
       position === indexofarchive ? { ...item, archive: false } : item
     )
-    setItems(updated)
+    localStorage.setItem("local",JSON.stringify(updated))
+    const edited = JSON.parse(localStorage.getItem("local"))
+    setItems(edited)
   }
 
   const handleshowpin = (indexofpin) => {
@@ -125,11 +140,11 @@ function Inputandbutton() {
           }}>Archives</button>
       </div>
       <div>
-        <input type="text" className="w-full border border-gray-700 rounded-lg bg-gray-700" placeholder="  Title"
+        <input type="text" className="text-gray-300 w-full border border-gray-700 rounded-lg bg-gray-700" placeholder="  Title"
           value={title} onChange={handletitle} />
         <br />
         <textarea
-          type="text" className="w-full border mt-1 rounded-lg border-gray-700 bg-gray-700" placeholder="  Type your note.."
+          type="text" className="text-gray-300 w-full border mt-1 rounded-lg border-gray-700 bg-gray-700" placeholder="  Type your note.."
           value={note} onChange={handleinput} />
 
         <button onClick={handleadd} className=" rounded bg-blue-700">
