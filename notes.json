@@ -1,0 +1,33 @@
+{
+  "notes": [
+    {
+      "title": "rizal basim",
+      "note": "intern at bridgeon",
+      "archive": false,
+      "showpin": false,
+      "id": "4IgeHyTWCn8"
+    },
+    {
+      "title": "amjad",
+      "note": "batch : 72",
+      "archive": false,
+      "showpin": false,
+      "id": "01JxsVMbkgY"
+    },
+    {
+      "title": "zafeer",
+      "note": "\nmy roommate\n",
+      "archive": false,
+      "showpin": false,
+      "id": "tqlWLyWcMmE"
+    },
+    {
+      "title": "thahir",
+      "note": "my batch mate\n",
+      "archive": false,
+      "showpin": false,
+      "id": "26QXFYmSeBs"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
