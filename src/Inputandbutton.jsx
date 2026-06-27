@@ -1,4 +1,5 @@
   import { useEffect, useState } from 'react'
+  import axios from "axios"
 
   function Inputandbutton() {
     const [addbutton, setAddbutton] = useState("Add")
@@ -18,9 +19,9 @@
     const [showpin, setShowpin] = useState(false)
 
     useEffect(() =>{ 
-      fetch("http://localhost:3000/notes")
-      .then((response)=> response.json())
-      .then((data) => setItems(data))
+      axios.get("http://localhost:3000/notes")
+      .then((response) => setItems(response.data))
+      .catch((error) => console.log("hey" + error))
     },[]);
 
     const handletitle = (event) => {
@@ -43,13 +44,7 @@
         )
         const updated = update.find((item) => item.id === editindex )
         console.log(updated)
-        fetch(`http://localhost:3000/notes/${editindex}`,{
-          method : "PATCH",
-          headers : {
-            "Content-Type" : "application/json"
-          },
-          body : JSON.stringify(updated),
-        })
+        axios.patch(`http://localhost:3000/notes/${editindex}`,updated)
         
       
         setEditindex("")
@@ -64,13 +59,8 @@
         const newnotes = { title, note, archive: false, showpin: false }
 
         
-          fetch("http://localhost:3000/notes",{
-          method : "POST",
-          headers : {
-            "Content-Type" : "application/json", 
-          },
-          body :  JSON.stringify(newnotes)
-        }).then((response) => response.json())
+          axios.post("http://localhost:3000/notes",newnotes)
+        
           setNote("")
           setTitle("")
           console.log(items)
@@ -88,12 +78,9 @@
 
       const deleted = items.filter((value) =>   itemId == value.id )
       
-      fetch(`http://localhost:3000/notes/${itemId}`,{
-        method : "DELETE"
-      }).then(() =>console.log("note deleted"))
-      .then((error) =>console.log(error))
-      
+      axios.delete(`http://localhost:3000/notes/${itemId}`)
     }
+    
     const handleedit = (indextoedit,editId) => {
       setTitle(items[indextoedit].title)
       setNote(items[indextoedit].note)
@@ -108,17 +95,8 @@
       )
     const updated = update.find((item) => item.id === id )
 
-    fetch(`http://localhost:3000/notes/${id}`,{
-      method : "PATCH",
-      headers :{
-        "Content-Type" : "application/json"
-      },
-      body : JSON.stringify(updated),
-    })
-    console.log(updated)
-    console.log(id)
-
-      
+    axios.patch(`http://localhost:3000/notes/${id}`,updated)
+    
     }
 
     const handleunarchive = (indexofarchive,id) => {
@@ -127,19 +105,7 @@
       )
       const updated = update.find((item) => item.id === id )
 
-      
-
-      fetch(`http://localhost:3000/notes/${id}`,{
-        method : "PATCH" ,
-        headers : {
-          "Content-Type" : "application/json" 
-        },
-        body : JSON.stringify(updated),
-      })
-      console.log(updated)
-
-      console.log(id)
-
+      axios.patch(`http://localhost:3000/notes/${id}`,updated)
     }
 
     const handleshowpin = (indexofpin) => {
@@ -166,10 +132,11 @@
 
     return (
       <>
-      <div className=" border rounded-lg p-4 bg-gray-800 m-6">
-        <h1 className='mb-4 font-bold text-3xl text-white '>📝 My Notes</h1>
-        <div>
-          <button className="border-2 rounded-lg bg-black text-white"
+      <div className=" mt-10 mx-auto  max-w-xl border rounded-3xl p-4 bg-gray-00 m-6  shadow-[0_0_20px_rgba(124,58,237,0.15)]">
+        <h1 className='mb-4 font-bold text-3xl text-blue-500 '>📝 My Notes</h1>
+        <hr className='text-gray-500 pb-3'></hr>
+        <div className='pb-3'>
+          <button className="border-2 rounded-lg bg-black text-white "
             onClick={() => {
               setShowArchive(false)
             }}>
@@ -180,49 +147,54 @@
             }}>Archives</button>
         </div>
         <div>
-          <input type="text" className="text-gray-300 w-full border border-gray-700 rounded-lg bg-gray-700" placeholder="  Title"
+          <input type="text" className=" hover:-translate-x-1 duration-500 pl-2 text-gray-300 w-full border border-gray-700 rounded-lg hover:bg-purple-800/30 bg-gray-900" placeholder="  Title"
             value={title} onChange={handletitle} />
-          <br />
+          <br/>
           <textarea
-            type="text" className="text-gray-300 w-full border mt-1 rounded-lg border-gray-700 bg-gray-700" placeholder="  Type your note.."
-            value={note} onChange={handleinput} />
+            type="text" className="hover:-translate-x-1 duration-500  pl-2 text-gray-300 w-full border mt-1 rounded-lg border-gray-700 hover:bg-purple-800/30 bg-gray-900" placeholder="  Type your note.."
+            value={note} onChange={handleinput} /><br/><br/>
 
-          <button onClick={handleadd} className=" rounded bg-blue-700">
+          <button onClick={handleadd} className=" hover:shadow-lg text-white shadow-blue-700/20 hover:border-2 border-gray-400 rounded bg-blue-700">
             &nbsp;&nbsp;{addbutton}&nbsp;&nbsp;</button>
         </div>
-        <ol>
+        <ol className='p-3 '>
           {items.map((item, index) => ({ item, index }))
             .filter(({ item }) => showArchive ? item.archive : !item.archive)
             .map(({ item, index }) => (
-              <li key={item.id} className="border-2 rounded-lg text-gray-300 border-gray-900 bg-gray-900 mt-4">
+              <li key={item.id} 
+              className="border-gray-900 border hover:shadow-xl hover: shadow-[0_0_20px_rgba(124,58,237,0.25)]
+               hover:border-blue-500 rounded-3xl text-gray-300  bg-gray-000 mt-4 hover:-translate-y-1 duration-500 hover:-translate-x-1 duration-500"
+               >
 
-                <p className="font-bold text-lg">{item.title}</p>
+                <p className="font-bold text-lg pl-4 pt-3">{item.title}</p>
 
-                <p>{item.note}</p>
+                <p className='pl-4 '>{item.note}</p>
+                 <hr className="text-gray-800 mt-5 ml-4 mr-4"></hr> 
 
-                <div className="flex justify-end" >
+                <div className="flex justify-end  pt-3 pb-2 pr-3" >
+                  
 
-                <button className="text-xl"
+                <button className="text-xl text-purple-500 hover:border-1 rounded-lg border-purple-900"
                   onClick={() => {
                     handleedit(index,item.id)
                   }}>&nbsp;✎&nbsp;</button>
 
-                <button className="text-2xl"
-                  onClick={() => handleshowpin(index)}>🖈</button>
+                <button className="text-3xl pl-2 hover:border-1 rounded-lg border-gray-600 "
+                  onClick={() => handleshowpin(index)}>🖈&nbsp;</button>
 
-                <button className=" text-xl" onClick = {() => {
+                <button className=" text-xl pl-2 hover:border-1 rounded-lg border-red-900" onClick = {() => {
 
                   handledelete(item.id)
 
-                }}>⛔</button>
+                }}>⛔&nbsp;</button>
 
-                <button className="text-xl "
+                <button className="text-xl pl-2 hover:border-1 rounded-lg border-blue-800"
                   onClick={() => handlearchive(index,item.id)}>
-                  ⤵  </button>
+                  ⤵&nbsp;  </button>
 
-                <button className="text-xl"
+                <button className="text-xl pl-2 hover:border-1 rounded-lg border-blue-800 "
                   onClick={() => handleunarchive(index,item.id)}>
-                  ⤴  </button>
+                  ⤴ &nbsp; </button>
 
                   </div>
 

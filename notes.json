@@ -2,7 +2,7 @@
   "notes": [
     {
       "title": "rizal basim",
-      "note": "intern at bridgeon",
+      "note": "intern at bridgeon\n",
       "archive": false,
       "showpin": false,
       "id": "4IgeHyTWCn8"
@@ -15,18 +15,18 @@
       "id": "01JxsVMbkgY"
     },
     {
-      "title": "zafeer",
-      "note": "\nmy roommate\n",
+      "title": "Basim",
+      "note": "from koorachipadi",
       "archive": false,
-      "showpin": false,
-      "id": "tqlWLyWcMmE"
+      "showpin": true,
+      "id": "Gi16kGrzepM"
     },
     {
-      "title": "thahir",
-      "note": "my batch mate\n",
+      "title": "afla",
+      "note": "cute girl",
       "archive": false,
       "showpin": false,
-      "id": "26QXFYmSeBs"
+      "id": "xNb8ftaPvNE"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
